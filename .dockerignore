@@ -1,0 +1,31 @@
+# Node modules
+node_modules
+
+# Build output
+dist
+build
+
+# Git
+.git
+.gitignore
+
+# Docker files themselves
+Dockerfile
+docker-compose.yml
+
+# Logs
+*.log
+
+# Env files
+.env
+.env.*
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Misc
+coverage
+*.tsbuildinfo
