@@ -87,4 +87,4 @@ MIT License
 
 ## ⚠️ Status
 
-🚧 Work in progress — things may change quickly.
+Work in progress — things may change quickly.
