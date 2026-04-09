@@ -2,7 +2,7 @@
 
 An interactive web app for learning and practicing **Conway’s Doomsday Algorithm** — a mental math technique used to calculate the day of the week for any date.
 
-> Built with React + TypeScript + Vite • Docker-ready
+> Built with React + TypeScript + Vite • Fully Dockerized
 
 ---
 
@@ -11,14 +11,37 @@ An interactive web app for learning and practicing **Conway’s Doomsday Algorit
 * 📅 Practice random date challenges
 * 🧩 Learn the algorithm step-by-step
 * ⚡ Fast and responsive UI
-* 🐳 Easy deployment with Docker(soon)
+* 🐳 Containerized with Docker for easy deployment
 * 🖥️ Self-host friendly
 
 ---
 
 ## 🚀 Getting Started
 
-### 💻 Run locally (without Docker, coming in near future)
+### 🐳 Run with Docker (recommended)
+
+#### 1. Clone the repository
+
+```bash
+git clone https://github.com/Vorsteh/doomsday.git
+cd doomsday
+```
+
+#### 2. Build and start the container
+
+```bash
+docker compose up -d --build
+```
+
+#### 3. Open in browser
+
+```
+http://localhost:6769
+```
+
+---
+
+### 💻 Run locally (development)
 
 #### 1. Install dependencies
 
@@ -32,6 +55,12 @@ npm install
 npm run dev
 ```
 
+Then open:
+
+```
+http://localhost:5173
+```
+
 ---
 
 ## 🛠️ Tech Stack
@@ -39,27 +68,30 @@ npm run dev
 * **React** – UI
 * **TypeScript** – Type safety
 * **Vite** – Build tool
-* **Docker** – Containerized deployment
+* **Docker + Nginx** – Production deployment
+
+---
+
+## 📦 Production Build (manual)
+
+If you want to build without Docker:
+
+```bash
+npm run build
+npm run preview
+```
 
 ---
 
 ## 📚 About the Algorithm
 
-The **Doomsday Algorithm**, created by mathematician John Conway, lets you determine the weekday of any date using mental math.
+The **Doomsday Algorithm**, created by mathematician John Conway, allows you to determine the weekday of any date using mental math.
 
-This app is designed to help you:
+This app helps you:
 
 * Understand the method
 * Practice efficiently
 * Build speed and accuracy
-
----
-
-## 📦 Production Build
-
-```bash
-npm run build
-```
 
 ---
 
@@ -75,7 +107,7 @@ npm run build
 
 ## 🤝 Contributing
 
-Pull requests and ideas are welcome!
+Pull requests and ideas are welcome.
 
 ---
 
@@ -87,4 +119,4 @@ MIT License
 
 ## ⚠️ Status
 
-Work in progress — things may change quickly.
+Work in progress — features and structure may change.
