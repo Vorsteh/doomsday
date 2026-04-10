@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
+import "katex/dist/katex.min.css";
+import { InlineMath, BlockMath } from "react-katex";
 
-const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const DAY_NAMES = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 type StepState = "idle" | "correct" | "wrong";
 
@@ -20,14 +30,15 @@ export default function PracticePage() {
   const [finalDayState, setFinalDayState] = useState<StepState>("idle");
 
   const [hasGuessed, setHasGuessed] = useState(false);
+  const [showSolution, setShowSolution] = useState(false);
 
   function generateDate() {
     setHasGuessed(false);
+    setShowSolution(false);
 
-    const start = new Date(2000, 0, 1).getTime();
-    const now = Date.now();
-
-    const newDate = new Date(start + Math.random() * (now - start));
+    const start = new Date(1700, 0, 1).getTime();
+    const end = new Date(2100, 11, 31).getTime();
+    const newDate = new Date(start + Math.random() * (end - start));
 
     setDate(newDate);
 
@@ -63,11 +74,20 @@ export default function PracticePage() {
   function handleCheck() {
     setHasGuessed(true);
 
-    if (correctAnchor === null) return;
+    if (
+      correctAnchor === null ||
+      correctDoomsday === null ||
+      correctFinalDay === null
+    )
+      return;
 
-    setAnchorState(parseInt(anchorInput) === correctAnchor ? "correct" : "wrong");
-    setDoomsdayState(parseInt(doomsdayInput) === correctDoomsday ? "correct" : "wrong");
-    setFinalDayState(parseInt(finalDayInput) === correctFinalDay ? "correct" : "wrong");
+    const a = parseInt(anchorInput);
+    const d = parseInt(doomsdayInput);
+    const f = parseInt(finalDayInput);
+
+    setAnchorState(a === correctAnchor ? "correct" : "wrong");
+    setDoomsdayState(d === correctDoomsday ? "correct" : "wrong");
+    setFinalDayState(f === correctFinalDay ? "correct" : "wrong");
   }
 
   useEffect(() => {
@@ -93,19 +113,19 @@ export default function PracticePage() {
         <p className="font-mono text-xs tracking-widest uppercase text-violet-400 mb-2">
           Practice
         </p>
-        <h1 className="font-serif text-4xl font-normal text-violet-100 tracking-wide">
+        <h1 className="font-serif text-4xl text-violet-100 tracking-wide">
           Name the Day
         </h1>
-        <p className="text-gray-400 mt-3 text-sm leading-relaxed">
-          Given a random date, calculate the day of the week using Conway's Doomsday Algorithm.
+        <p className="text-gray-400 mt-3 text-sm">
+          Calculate the weekday using Conway's Doomsday Algorithm.
         </p>
       </div>
 
       <div className="bg-white/[0.03] border border-white/10 rounded-xl p-8 mb-4 text-center">
-        <p className="text-gray-500 font-mono text-xs tracking-widest uppercase mb-3">
+        <p className="text-gray-500 font-mono text-xs uppercase mb-3">
           Date
         </p>
-        <p className="text-violet-100 text-3xl font-serif tracking-wide">
+        <p className="text-violet-100 text-3xl font-serif">
           {date?.toLocaleDateString("en-GB", {
             day: "numeric",
             month: "long",
@@ -115,80 +135,151 @@ export default function PracticePage() {
       </div>
 
       <div className="bg-white/[0.03] border border-white/10 rounded-xl p-8 mb-4 flex flex-col gap-6">
-        <div>
-          <label className={labelClasses}>Century Anchor Day</label>
-          <select
-            value={anchorInput}
-            onChange={(e) => setAnchorInput(e.target.value)}
-            className={`w-full rounded-lg px-4 py-2.5 text-sm border transition-colors outline-none cursor-pointer ${stateClasses[anchorState]}`}
-          >
-            <option value="" disabled>
-              Select anchor day…
-            </option>
-            {DAY_NAMES.map((name, i) => (
-              <option key={i} value={i} className="bg-gray-900">
-                {name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {!showSolution ? (
+          <>
+            <div>
+              <label className={labelClasses}>Century Anchor Day</label>
+              <select
+                value={anchorInput}
+                onChange={(e) => setAnchorInput(e.target.value)}
+                className={`w-full rounded-lg px-4 py-2.5 text-sm border ${stateClasses[anchorState]}`}
+              >
+                <option value="" disabled>
+                  Select anchor day…
+                </option>
+                {DAY_NAMES.map((name, i) => (
+                  <option key={i} value={i} className="bg-gray-900">
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        <div>
-          <label className={labelClasses}>Year's Doomsday</label>
-          <select
-            value={doomsdayInput}
-            onChange={(e) => setDoomsdayInput(e.target.value)}
-            className={`w-full rounded-lg px-4 py-2.5 text-sm border transition-colors outline-none cursor-pointer ${stateClasses[doomsdayState]}`}
-          >
-            <option value="" disabled>
-              Select doomsday…
-            </option>
-            {DAY_NAMES.map((name, i) => (
-              <option key={i} value={i} className="bg-gray-900">
-                {name}
-              </option>
-            ))}
-          </select>
-        </div>
+            <div>
+              <label className={labelClasses}>Year's Doomsday</label>
+              <select
+                value={doomsdayInput}
+                onChange={(e) => setDoomsdayInput(e.target.value)}
+                className={`w-full rounded-lg px-4 py-2.5 text-sm border ${stateClasses[doomsdayState]}`}
+              >
+                <option value="" disabled>
+                  Select doomsday…
+                </option>
+                {DAY_NAMES.map((name, i) => (
+                  <option key={i} value={i} className="bg-gray-900">
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        <div>
-          <label className={labelClasses}>Final Day of Week</label>
-          <select
-            value={finalDayInput}
-            onChange={(e) => setFinalDayInput(e.target.value)}
-            className={`w-full rounded-lg px-4 py-2.5 text-sm border transition-colors outline-none cursor-pointer ${stateClasses[finalDayState]}`}
-          >
-            <option value="" disabled>
-              Select day…
-            </option>
-            {DAY_NAMES.map((name, i) => (
-              <option key={i} value={i} className="bg-gray-900">
-                {name}
-              </option>
-            ))}
-          </select>
-        </div>
+            <div>
+              <label className={labelClasses}>Final Day</label>
+              <select
+                value={finalDayInput}
+                onChange={(e) => setFinalDayInput(e.target.value)}
+                className={`w-full rounded-lg px-4 py-2.5 text-sm border ${stateClasses[finalDayState]}`}
+              >
+                <option value="" disabled>
+                  Select day…
+                </option>
+                {DAY_NAMES.map((name, i) => (
+                  <option key={i} value={i} className="bg-gray-900">
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </>
+        ) : (
+          <div className="text-gray-300 text-sm flex flex-col gap-4">
+            {date &&
+              correctAnchor !== null &&
+              correctDoomsday !== null &&
+              correctFinalDay !== null && (
+                <>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">
+                      Century Anchor
+                    </p>
+                    <BlockMath math={`\\text{Anchor} = ${correctAnchor}`} />
+                    <p>{DAY_NAMES[correctAnchor]}</p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">
+                      Year Breakdown
+                    </p>
+                    <BlockMath
+                      math={`
+                        \\begin{aligned}
+                        y &= ${date.getFullYear()} \\\\
+                        c &= \\lfloor y / 100 \\rfloor = ${Math.floor(
+                        date.getFullYear() / 100
+                      )} \\\\
+                        y' &= y \\mod 100 = ${date.getFullYear() % 100}
+                        \\end{aligned}
+                      `}
+                    />
+                  </div>
+
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">
+                      Doomsday Calculation
+                    </p>
+                    <BlockMath
+                      math={`
+                        \\begin{aligned}
+                        a &= \\lfloor ${
+                        date.getFullYear() % 100
+                      } / 12 \\rfloor = ${Math.floor(
+                        (date.getFullYear() % 100) / 12
+                      )} \\\\
+                        b &= ${date.getFullYear() % 100} \\mod 12 = ${
+                        (date.getFullYear() % 100) % 12
+                      } \\\\
+                        c &= \\lfloor b / 4 \\rfloor = ${Math.floor(
+                        ((date.getFullYear() % 100) % 12) / 4
+                      )} \\\\
+                        d &= (a + b + c + \\text{anchor}) \\mod 7 \\\\
+                        &= ${correctDoomsday}
+                        \\end{aligned}
+                        `}
+                    />
+                    <p>{DAY_NAMES[correctDoomsday]}</p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">
+                      Final Day
+                    </p>
+                    <BlockMath math={`\\text{Day} = ${correctFinalDay}`} />
+                    <p className="text-lg">
+                      {DAY_NAMES[correctFinalDay]}
+                    </p>
+                  </div>
+                </>
+              )}
+          </div>
+        )}
       </div>
 
-      {anchorState !== "idle" && (
-        <div className="bg-white/[0.03] border border-white/10 rounded-xl px-8 py-5 mb-4 flex flex-col gap-1.5 text-sm font-mono">
+      {(hasGuessed || showSolution) && (
+        <div className="bg-white/[0.03] border border-white/10 rounded-xl px-8 py-5 mb-4 flex flex-col gap-2 text-sm font-mono">
           <FeedbackRow
             label="Anchor"
             state={anchorState}
-            correct={correctAnchor!}
-            getDayName={(n) => DAY_NAMES[n]}
+            correct={correctAnchor}
           />
           <FeedbackRow
             label="Doomsday"
             state={doomsdayState}
-            correct={correctDoomsday!}
-            getDayName={(n) => DAY_NAMES[n]}
+            correct={correctDoomsday}
           />
           <FeedbackRow
             label="Final Day"
             state={finalDayState}
-            correct={correctFinalDay!}
-            getDayName={(n) => DAY_NAMES[n]}
+            correct={correctFinalDay}
           />
         </div>
       )}
@@ -197,18 +288,14 @@ export default function PracticePage() {
         {!hasGuessed ? (
           <button
             onClick={handleCheck}
-            className="flex-1 py-2.5 rounded-lg text-sm font-medium bg-violet-600 hover:bg-violet-500 text-white transition-colors"
+            className="flex-1 py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-white"
           >
             Check
           </button>
         ) : (
           <button
-            onClick={() => {
-              setAnchorState("wrong");
-              setDoomsdayState("wrong");
-              setFinalDayState("wrong");
-            }}
-            className="flex-1 py-2.5 rounded-lg text-sm font-medium bg-amber-600 hover:bg-amber-500 text-white transition-colors"
+            onClick={() => setShowSolution(true)}
+            className="flex-1 py-2.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white"
           >
             Show Solution
           </button>
@@ -216,7 +303,7 @@ export default function PracticePage() {
 
         <button
           onClick={generateDate}
-          className="flex-1 py-2.5 rounded-lg text-sm font-medium border border-white/10 text-gray-400 hover:text-gray-200 hover:bg-white/5 transition-colors"
+          className="flex-1 py-2.5 rounded-lg border border-white/10 text-gray-400 hover:text-gray-200"
         >
           New Date
         </button>
@@ -229,26 +316,28 @@ function FeedbackRow({
   label,
   state,
   correct,
-  getDayName,
 }: {
   label: string;
   state: StepState;
-  correct: number;
-  getDayName: (n: number) => string;
+  correct: number | null;
 }) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-gray-500 text-xs tracking-widest uppercase">
+    <div className="flex justify-between">
+      <span className="text-gray-500 text-xs uppercase">
         {label}
       </span>
       <span
         className={
-          state === "correct" ? "text-emerald-400" : "text-red-400"
+          state === "correct"
+            ? "text-emerald-400"
+            : "text-red-400"
         }
       >
         {state === "correct"
           ? "Correct"
-          : `Answer: ${getDayName(correct)}`}
+          : correct !== null
+          ? `Answer: ${DAY_NAMES[correct]}`
+          : ""}
       </span>
     </div>
   );
