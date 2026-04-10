@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "katex/dist/katex.min.css";
-import { InlineMath, BlockMath } from "react-katex";
+import { BlockMath } from "react-katex";
 
 const DAY_NAMES = [
   "Sunday",
