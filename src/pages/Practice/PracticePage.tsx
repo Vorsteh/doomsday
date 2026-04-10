@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 
 export default function PracticePage() {
+  const [date, setDate] = useState<Date | null>(null);
 
-  const [date, setDate] = useState(null);
 
   function generateDate() {
     const newDate = new Date(
@@ -15,9 +15,6 @@ export default function PracticePage() {
 
   useEffect(() => {
     generateDate();
-    return () => {
-      return true;
-    }
   }, [])
   
 
