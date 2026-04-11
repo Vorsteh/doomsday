@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "katex/dist/katex.min.css";
 import { BlockMath } from "react-katex";
+import { PageContainer } from "../../components/PageContainer"
+
 
 const DAY_NAMES = [
   "Sunday",
@@ -108,6 +110,8 @@ export default function PracticePage() {
     "font-mono text-xs tracking-widest uppercase text-violet-400 mb-2 block";
 
   return (
+
+  <PageContainer>
     <div>
       <div className="mb-10">
         <p className="font-mono text-xs tracking-widest uppercase text-violet-400 mb-2">
@@ -309,6 +313,8 @@ export default function PracticePage() {
         </button>
       </div>
     </div>
+
+  </PageContainer>
   );
 }
 

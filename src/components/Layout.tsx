@@ -18,15 +18,13 @@ export default function Layout() {
   }}
 >
 */
-
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 bg-[radial-gradient(ellipse_80%_40%_at_50%_-5%,rgba(109,40,217,0.15),transparent)]">
+    <div className="min-h-screen flex flex-col bg-gray-950 text-gray-100 bg-[radial-gradient(ellipse_80%_40%_at_50%_-5%,rgba(109,40,217,0.15),transparent)]">
       <Navbar />
-      <main className="max-w-3xl mx-auto px-8 py-12">
+      <main className="flex-1">
         <Outlet />
       </main>
     </div>
-  )
-
+    )
 }
 
