@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "katex/dist/katex.min.css";
-import { BlockMath } from "react-katex";
+
+import { BlockMath } from "../../components/BlockMath"
+
 import { PageContainer } from "../../components/PageContainer"
 
 
