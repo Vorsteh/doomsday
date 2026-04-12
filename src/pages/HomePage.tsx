@@ -16,7 +16,7 @@ export default function HomePage() {
         <span className="text-violet-300">
           Conway's Doomsday Algorithm
         </span>.
-        Improve your mental math and calculate weekdays instantly.
+        Learn to calculate weekdays instantly while also learning a cool party trick.
       </p>
 
       <div className="flex flex-col sm:flex-row gap-4">
