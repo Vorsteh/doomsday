@@ -1,3 +1,10 @@
 @import "tailwindcss";
 
 
+.perspective {
+  perspective: 1000px;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
