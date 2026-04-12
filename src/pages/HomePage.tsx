@@ -21,17 +21,17 @@ export default function HomePage() {
 
       <div className="flex flex-col sm:flex-row gap-4">
         <Link
-          to="/practice"
+          to="/learn"
           className="px-6 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-sm tracking-wide transition"
         >
-          Start Practicing
+          Start Learning
         </Link>
 
         <Link
-          to="/learn"
+          to="/practice"
           className="px-6 py-3 rounded-lg border border-violet-500/40 text-violet-300 hover:bg-violet-500/10 text-sm tracking-wide transition"
         >
-          Start Learning
+          Start Practicing
         </Link>
 
         <a
